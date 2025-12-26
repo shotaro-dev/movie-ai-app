@@ -13,51 +13,62 @@
   >
     <header class="flex flex-col items-center gap-4 py-8">
       <img
-        src="./images/popcorn_generated_in_Grok.jpeg"
+        src="./images/popcorn_generated_by_Grok.jpeg"
         alt="Popcorn cartoon character"
         class="w-20 h-auto rounded-full"
       />
       <h1 class="text-4xl font-bold">PopChoice</h1>
     </header>
     <main>
-      <form class="flex flex-col gap-8 px-4 mb-8">
-        <div class="flex flex-col">
-          <label for="question-favorite"
-            >What's your favorite movie and why?</label
-          >
-          <textarea
-            name="favorite"
-            class="bg-slate-300 rounded-lg p-2 text-black resize-none"
-            id="question-favorite"
-          ></textarea>
-        </div>
-        <div class="flex flex-col">
-          <label for="question-mood"
-            >Are you in the mood for something new or a classic?</label
-          >
-          <textarea
-            name="mood"
-            class="bg-slate-300 rounded-lg p-2 text-black resize-none"
-            id="question-mood"
-          ></textarea>
-        </div>
-        <div class="flex flex-col">
-          <label for="question-serious"
-            >Do you have wanna have fun or do you want somthing serious?</label
-          >
-          <textarea
-            name="serious"
-            class="bg-slate-300 rounded-lg p-2 text-black resize-none"
-            id="question-serious"
-          ></textarea>
-        </div>
+      <section>
+        <h2 class="sr-only">Movie Preferences Form</h2>
+        <form class="flex flex-col gap-8 px-4 mb-8" id="movie-form">
+          <div class="flex flex-col">
+            <label for="question-favorite"
+              >What's your favorite movie and why?</label
+            >
+            <textarea
+              name="question"
+              class="bg-slate-300 rounded-lg p-2 text-black resize-none"
+              id="question-favorite"
+            ></textarea>
+          </div>
+          <div class="flex flex-col">
+            <label for="question-mood"
+              >Are you in the mood for something new or a classic?</label
+            >
+            <textarea
+              name="question"
+              class="bg-slate-300 rounded-lg p-2 text-black resize-none"
+              id="question-mood"
+            ></textarea>
+          </div>
+          <div class="flex flex-col">
+            <label for="question-serious"
+              >Do you have wanna have fun or do you want somthing
+              serious?</label
+            >
+            <textarea
+              name="question"
+              class="bg-slate-300 rounded-lg p-2 text-black resize-none"
+              id="question-serious"
+            ></textarea>
+          </div>
 
-        <button
-          class="bg-green-500 rounded-lg p-2 text-black text-3xl font-bold font-serif hover:bg-green-600 transition active:scale-95"
-        >
-          Let's Go
-        </button>
-      </form>
+          <button 
+            class="bg-green-500 rounded-lg p-2 text-black text-3xl font-bold font-serif hover:bg-green-600 transition active:scale-95"
+          >
+            Let's Go
+          </button>
+        </form>
+      </section>
+      <section>
+        <h2 class="sr-only">Recommended Movie:</h2>
+        <div
+          id="recommended-movie-result"
+          class=""
+        ></div>
+      </section>
     </main>
     <footer>
       <p class="text-center py-4 text-sm text-gray-300">
