@@ -2,18 +2,18 @@
 <html lang="en">
   <head>
     <title>PopChoice</title>
-    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="./src/index.css" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script type="module" src="index.js" defer></script>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <script type="module" src="./src/index.js" defer></script>
   </head>
   <body
     class="bg-indigo-950 text-white min-h-screen max-w-3xl flex flex-col items-center mx-auto"
   >
     <header class="flex flex-col items-center gap-4 py-8">
       <img
-        src="./images/popcorn_generated_by_Grok.jpeg"
+        src="./src/assets/images/popcorn_generated_by_Grok.jpeg"
         alt="Popcorn cartoon character"
         class="w-20 h-auto rounded-full"
       />
@@ -55,7 +55,7 @@
             ></textarea>
           </div>
 
-          <button 
+          <button
             class="bg-green-500 rounded-lg p-2 text-black text-3xl font-bold font-serif hover:bg-green-600 transition active:scale-95"
           >
             Let's Go
@@ -64,10 +64,7 @@
       </section>
       <section>
         <h2 class="sr-only">Recommended Movie:</h2>
-        <div
-          id="recommended-movie-result"
-          class=""
-        ></div>
+        <div id="recommended-movie-result" class=""></div>
       </section>
     </main>
     <footer>
