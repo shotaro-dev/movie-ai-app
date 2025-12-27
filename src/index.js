@@ -23,12 +23,17 @@ form.addEventListener("submit", async (e) => {
   const formData = new FormData(form);
   // formdataからの値を取得
   const inputs = formData.getAll("answer");
-  const query = QUESTIONS.map((question, index) => {
-    return `${question}\n${inputs[index]}`;
-  }).join("\n\n");
+  // const query = QUESTIONS.map((question, index) => {
+  //   return `${question}\n${inputs[index]}`;
+  // }).join("\n\n");
+  // console.log("User query:", query);
+  
+  const query = Array.from(inputs).join("\n");
   console.log("User query:", query);
-
-  const embedding = await createEmbedding(query);
+  const movieDescription = await rewriteUserInputAsMovieDescription(query);
+  console.log("Converted movie description:", movieDescription);
+ 
+  const embedding = await createEmbedding(movieDescription);
   // console.log(embedding);
   const similarMovies = await searchSimilarMovies(embedding);
   console.log(similarMovies);
@@ -50,37 +55,42 @@ async function createEmbedding(text) {
   }
 }
 
-async function translateToEnglish(text) {
+// userからの解答を映画のvectordatabaseで類似検索しやすい形でchat completionで英訳する
+async function rewriteUserInputAsMovieDescription(text) {
   const messages = [
     {
       role: "system",
       content:
-        "You are the world's foremost translator, mastering every language. Please translate any text into accurate and natural English.",
-    },
+        `You are an expert movie recommender and the world's foremost expert in translating all languages into English. 
+        Convert user input into a concise movie description format, highlighting key themes, genres, and emotions that align with popular movie categories.`
+    } ,
     {
       role: "user",
-      content: `Translate the following text to English:\n\n${text}`,
-    },
-  ];
+      content: `Convert the following user input into a movie description format in English:\n\n${text}`,
+    }
+  ]
 
-  try {
+  try { 
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: messages,
       temperature: 0.3,
       max_tokens: 300,
+      presence_penalty: 0,// default 0
+      frequency_penalty: 0, //default 0
     });
-    
+
     if (!response.choices || response.choices.length === 0) {
-      throw new Error("No choices returned from translation API");
+      throw new Error("No choices returned from conversion API");
     }
 
     return response.choices[0].message.content.trim();
   } catch (error) {
-    console.error("Translation API error:", error);
+    console.error("Conversion API error:", error);
     throw error;
   }
 }
+
 
 // ベクトルの類似性で映画を検索する
 async function searchSimilarMovies(embedding) {
@@ -108,6 +118,7 @@ async function storeMovieEmbeddings() {
     const data = await Promise.all(
       movies.default.map(async (movie) => {
         const { title, releaseYear, content } = movie;
+        // オブジェクトはembeddingできないから文字列に変換する。
         const embeddingText = `${title}\n(${releaseYear})\n${content}`;
         const embedding = await createEmbedding(embeddingText);
         return {
