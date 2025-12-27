@@ -25,7 +25,7 @@ form.addEventListener("submit", async (e) => {
   const inputs = formData.getAll("answer");
   const query = QUESTIONS.map((question, index) => {
     return `${question}\n${inputs[index]}`;
-  }).join("\n");
+  }).join("\n\n");
   console.log("User query:", query);
 
   const embedding = await createEmbedding(query);
@@ -46,6 +46,38 @@ async function createEmbedding(text) {
     return embedding;
   } catch (error) {
     console.error("Embedding API error:", error);
+    throw error;
+  }
+}
+
+async function translateToEnglish(text) {
+  const messages = [
+    {
+      role: "system",
+      content:
+        "You are the world's foremost translator, mastering every language. Please translate any text into accurate and natural English.",
+    },
+    {
+      role: "user",
+      content: `Translate the following text to English:\n\n${text}`,
+    },
+  ];
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: messages,
+      temperature: 0.3,
+      max_tokens: 300,
+    });
+    
+    if (!response.choices || response.choices.length === 0) {
+      throw new Error("No choices returned from translation API");
+    }
+
+    return response.choices[0].message.content.trim();
+  } catch (error) {
+    console.error("Translation API error:", error);
     throw error;
   }
 }
